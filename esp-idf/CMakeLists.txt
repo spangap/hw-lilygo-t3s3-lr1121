@@ -1,0 +1,25 @@
+# hw-lilygo-t3s3-lr1121 board HAL — an ordinary spangap component (not a buildable).
+#
+# Compiles the LilyGo T3-S3 (LR1121) board code: the LoRa CS park
+# (t3s3lr1121.cpp). No on-device UI.
+#
+# app_main is NOT here — it's generated into the reticulous/reticulous buildable
+# that adds this board with `--with`. This component just exports the board
+# start: hook the generated dispatcher calls.
+include(${CMAKE_CURRENT_LIST_DIR}/spangap_requires.cmake)
+idf_component_register(
+    SRCS
+        "src/t3s3lr1121.cpp"
+        # This board's one self-assertion (detect_hw), called by
+        # spangapInit() before any bus is claimed.
+        "src/detect.cpp"
+        ${SPANGAP_CONDITIONAL_SRCS}
+    INCLUDE_DIRS "include" ${SPANGAP_CONDITIONAL_INCLUDE_DIRS}
+    REQUIRES
+        ${SPANGAP_REQUIRES}
+        driver
+        esp_event
+        esp_netif
+        esp_wifi
+        lwip
+)
